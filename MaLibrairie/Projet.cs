@@ -1,9 +1,13 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
 
-namespace Projet
+namespace MaLibrairie
 {
     public class Projet : INotifyPropertyChanged
     {
@@ -12,8 +16,7 @@ namespace Projet
         private string _description;
         private DateTime _dateDebut;
         private DateTime _dateFin;
-        private string _cheminImage;
-        private ObservableCollection<Tache.Tache> _taches;
+        private ObservableCollection<Tache> _taches;
 
         public int IdProjet
         {
@@ -45,18 +48,15 @@ namespace Projet
             set { _dateFin = value; OnPropertyChanged(); }
         }
 
-        public string CheminImage
-        {
-            get { return _cheminImage; }
-            set { _cheminImage = value; OnPropertyChanged(); }
-        }
-
-        public ObservableCollection<Tache.Tache> Taches
+        public ObservableCollection<Tache> Taches
         {
             get { return _taches; }
             set { _taches = value; OnPropertyChanged(); }
         }
 
+        public Projet() : this(1, "Nouveau Projet", "Description par défaut", DateTime.Now, DateTime.Now.AddMonths(1), "")
+        {
+        }
         public Projet(int idProjet, string nom, string description, DateTime dateDebut, DateTime dateFin, string cheminImage)
         {
             _idProjet = idProjet;
@@ -64,8 +64,7 @@ namespace Projet
             _description = description;
             _dateDebut = dateDebut;
             _dateFin = dateFin;
-            _cheminImage = cheminImage;
-            _taches = new ObservableCollection<Tache.Tache>();
+            _taches = new ObservableCollection<Tache>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -75,4 +74,5 @@ namespace Projet
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
 }

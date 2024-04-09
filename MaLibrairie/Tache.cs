@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Membres;
-using Projet;
 
-namespace Tache
+namespace MaLibrairie
 {
     public class Tache : INotifyPropertyChanged
     {
@@ -39,23 +41,24 @@ namespace Tache
             set { _priorite = value; OnPropertyChanged(); }
         }
 
-
-        public Membre Membres 
+        public Membre Membre
         {
             get { return _membre; }
-            set { return _membre = value; } 
-
+            set { _membre = value; OnPropertyChanged(); } // Corrigé pour inclure la notification de changement
         }
-        public Projet Projets 
+        public Projet Projet
         {
             get { return _projet; }
-            set { return _projet = value; }
+            set { _projet = value; OnPropertyChanged(); } // Corrigé pour inclure la notification de changement
         }
 
-        public Tache() : this(1,"tache1", new DateTime(2024,1,1), 1, new Membre(), new Projet())
+        // Constructeur par défaut qui initialise une tâche avec des valeurs par défaut
+        // Notez que la création de nouvelles instances de Membre et Projet sans paramètres peut nécessiter des constructeurs par défaut dans ces classes.
+        public Tache() : this(0, "Nouvelle Tâche", DateTime.Now, 1, new Membre(), new Projet())
         {
 
         }
+
         public Tache(int idTache, string titre, DateTime dateEcheance, int priorite, Membre membre, Projet projet)
         {
             _idTache = idTache;
@@ -70,10 +73,8 @@ namespace Tache
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
 }

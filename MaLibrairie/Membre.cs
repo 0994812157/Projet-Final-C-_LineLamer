@@ -1,8 +1,12 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Membre
+namespace MaLibrairie
 {
     public class Membre : INotifyPropertyChanged
     {
@@ -42,7 +46,7 @@ namespace Membre
             set { _role = value; OnPropertyChanged(); }
         }
 
-        public Membre() : this(1,"inconnu","inconnu","","admin")
+        public Membre() : this(1, "inconnu", "inconnu", "", "admin")
         {
 
         }
@@ -71,4 +75,6 @@ namespace Membre
             }
         }
     }
+
+
 }
