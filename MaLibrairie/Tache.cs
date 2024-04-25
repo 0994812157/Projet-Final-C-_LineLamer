@@ -8,14 +8,24 @@ using System.Runtime.CompilerServices;
 
 namespace MaLibrairie
 {
+    public enum StatutTache
+    {
+        Afaire = 1,
+        Encours = 2,
+        Termine = 3,
+        Enpause = 4,
+        Annule = 5
+    }
+
     public class Tache : INotifyPropertyChanged
     {
+        private static int _compteurIdTache = 0;
         private int _idTache;
         private string _titre;
         private DateTime _dateEcheance;
         private int _priorite;
         private Membre _membre;
-        private Projet _projet;
+        private StatutTache _statut;
 
         public int IdTache
         {
@@ -44,29 +54,33 @@ namespace MaLibrairie
         public Membre Membre
         {
             get { return _membre; }
-            set { _membre = value; OnPropertyChanged(); } // Corrigé pour inclure la notification de changement
+            set { _membre = value; OnPropertyChanged(); }
         }
-        public Projet Projet
+
+        public StatutTache Statut
         {
-            get { return _projet; }
-            set { _projet = value; OnPropertyChanged(); } // Corrigé pour inclure la notification de changement
+            get { return _statut; }
+            set { _statut = value; OnPropertyChanged(); }
         }
 
-        // Constructeur par défaut qui initialise une tâche avec des valeurs par défaut
-        // Notez que la création de nouvelles instances de Membre et Projet sans paramètres peut nécessiter des constructeurs par défaut dans ces classes.
-        public Tache() : this(0, "Nouvelle Tâche", DateTime.Now, 1, new Membre(), new Projet())
+        public Tache()
         {
-
+            _idTache = _compteurIdTache++;
+            _titre = "Nouvelle Tâche";
+            _dateEcheance = DateTime.Now;
+            _priorite = 1; // Supposons que 1 est la priorité la plus basse
+            _membre = new Membre(); // Assurez-vous que Membre a un constructeur par défaut
+            _statut = StatutTache.Afaire;
         }
 
-        public Tache(int idTache, string titre, DateTime dateEcheance, int priorite, Membre membre, Projet projet)
+        public Tache(int idTache, string titre, DateTime dateEcheance, int priorite, Membre membre, StatutTache statut)
         {
             _idTache = idTache;
             _titre = titre;
             _dateEcheance = dateEcheance;
             _priorite = priorite;
             _membre = membre;
-            _projet = projet;
+            _statut = statut;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -76,5 +90,4 @@ namespace MaLibrairie
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-
 }

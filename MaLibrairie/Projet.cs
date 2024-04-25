@@ -7,16 +7,26 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 
+
+
+
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
 namespace MaLibrairie
 {
     public class Projet : INotifyPropertyChanged
     {
+        private static int compteurIdProjet = 0;
         private int _idProjet;
         private string _nom;
         private string _description;
         private DateTime _dateDebut;
         private DateTime _dateFin;
         private ObservableCollection<Tache> _taches;
+
 
         public int IdProjet
         {
@@ -54,10 +64,18 @@ namespace MaLibrairie
             set { _taches = value; OnPropertyChanged(); }
         }
 
-        public Projet() : this(1, "Nouveau Projet", "Description par défaut", DateTime.Now, DateTime.Now.AddMonths(1), "")
+
+        public Projet()
         {
+            _idProjet = compteurIdProjet++;
+            _nom = "Nouveau Projet";
+            _description = "Description par défaut";
+            _dateDebut = DateTime.Now;
+            _dateFin = DateTime.Now.AddMonths(1);
+            _taches = new ObservableCollection<Tache>();
         }
-        public Projet(int idProjet, string nom, string description, DateTime dateDebut, DateTime dateFin, string cheminImage)
+
+        public Projet(int idProjet, string nom, string description, DateTime dateDebut, DateTime dateFin)
         {
             _idProjet = idProjet;
             _nom = nom;
@@ -74,5 +92,4 @@ namespace MaLibrairie
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-
 }

@@ -13,7 +13,7 @@ namespace MaLibrairie
         private int _idMembre;
         private string _nom;
         private string _prenom;
-        private string _photo;
+        private Image _photo;
         private string _role;
 
         public int IdMembre
@@ -34,7 +34,7 @@ namespace MaLibrairie
             set { _prenom = value; OnPropertyChanged(); }
         }
 
-        public string Photo
+        public Image Photo
         {
             get { return _photo; }
             set { _photo = value; OnPropertyChanged(); }
@@ -46,7 +46,7 @@ namespace MaLibrairie
             set { _role = value; OnPropertyChanged(); }
         }
 
-        public Membre() : this(1, "inconnu", "inconnu", "", "admin")
+        public Membre() : this(1, "inconnu", "inconnu", new Image(), "admin")
         {
 
         }
@@ -56,7 +56,7 @@ namespace MaLibrairie
             return Nom + " " + Prenom + " " + Photo + " " + Role;
         }
 
-        public Membre(int idMembre, string nom, string prenom, string photo, string role)
+        public Membre(int idMembre, string nom, string prenom, Image photo, string role)
         {
             _idMembre = idMembre;
             _nom = nom;

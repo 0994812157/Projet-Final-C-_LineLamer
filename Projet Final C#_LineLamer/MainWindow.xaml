@@ -5,8 +5,94 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Projet_Final_C__LineLamer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Mon Application de Gestion" Height="450" Width="800">
+    <Grid Background="pink">
+
+        <TextBlock Text="GESTION DE PROJETS" 
+                   FontWeight="Bold" 
+                   FontSize="24" 
+                   Foreground="red" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Top"
+                   Margin="0,10,0,0" />
+
+        <!-- Project Panels Grid -->
+        <Grid Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Project Panel 1 -->
+            <Border Grid.Column="0" Background="LightPink" Margin="10,50,5,10">
+                <StackPanel>
+                    <TextBlock Text="Project1" FontWeight="Bold" />
+                    <ListView>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Nom" Width="120" DisplayMemberBinding="{Binding Nom}" />
+                                <GridViewColumn Header="Tâches" Width="120" DisplayMemberBinding="{Binding Taches}" />
+                                <GridViewColumn Header="Date Limite" Width="120" DisplayMemberBinding="{Binding DateLimite}" />
+                                <GridViewColumn Header="Déjà Effectué" Width="Auto">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding DejaEffectue}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                        <!-- Items should be bound to a data source, not hardcoded -->
+                    </ListView>
+                    <Button Content="Ajout Participant" RenderTransformOrigin="0.458,1.355"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Project Panel 2 (Similar to Panel 1) -->
+            <!-- ... -->
+
+            <!-- Add Project Panel -->
+            <Border Grid.Column="1" Background="LightPink" Margin="5,50,10,10">
+                <Button Content="ADD project" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Border>
+        </Grid>
+
+        <!-- Check-In Panel -->
+        <Grid Margin="10" Visibility="Collapsed">
+            <!-- Set Visibility to Visible when needed -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Check-In Title -->
+            <TextBlock Grid.Row="0" Text="Project1 - Check-in" FontWeight="Bold" />
+
+            <!-- Participant's status -->
+            <StackPanel Grid.Row="1">
+                <!-- Participant 1 Status -->
+                <Border Margin="5">
+                    <StackPanel>
+                        <TextBlock Text="I'm working on..." />
+                        <!-- The content below should be dynamically generated -->
+                        <TextBox Text="Task description..." />
+                        <TextBlock Text="And also..." />
+                        <TextBox Text="Additional info..." />
+                        <TextBlock Text="I could use help with:" />
+                        <TextBox Text="Help needed..." />
+                    </StackPanel>
+                </Border>
+
+                <!-- Participant 2 Status (Similar to Participant 1) -->
+                <!-- ... -->
+            </StackPanel>
+
+            <!-- Add Participant Button -->
+            <Button Grid.Row="2" Content="Ajout Participant" Margin="5"/>
+        </Grid>
+
 
     </Grid>
 </Window>
