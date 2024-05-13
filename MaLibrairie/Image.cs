@@ -16,18 +16,15 @@ namespace MaLibrairie
             set { _imagePath = value; }
         }
 
-        // Constructor that allows setting the image path upon object creation
         public Image(string imagePath)
         {
             _imagePath = imagePath;
         }
 
-        // Default constructor
         public Image()
         {
-            _imagePath = ""; // Set a default image path if necessary
+            _imagePath = ""; 
         }
 
-        // You can add methods here that work with the image if needed
     }
 }

@@ -1,96 +1,202 @@
-﻿<Window x:Class="Projet_Final_C__LineLamer.MainWindow"
+﻿<Window x:Class="Projet_Final_CSharp_LineLamer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Projet_Final_C__LineLamer"
+        xmlns:local="clr-namespace:Projet_Final_CSharp_LineLamer"
         mc:Ignorable="d"
-        Title="Mon Application de Gestion" Height="450" Width="800">
-    <Grid Background="pink">
+        Title="Mon Application de Gestion" Height="668" Width="1047"
+        d:DataContext="{d:DesignInstance local:MyData, IsDesignTimeCreatable=True}" Closing="Window_Closing">
+    <!--
+    
+    -->
 
+    <Window.Resources>
+        <local:StatutColor x:Key="StatutColor"/>
+    </Window.Resources>
+    <Grid Margin="0,0,0,-6">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="101*"/>
+            <ColumnDefinition Width="299*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="Black"/>
+                <GradientStop Color="#FF082B5B" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Menu -->
+        <Menu Grid.Row="0" Background="#FF9DA5B3" Grid.ColumnSpan="2">
+            <MenuItem Header="Ajouter" Click="MenuItem_Ajouter_Click"/>
+            <MenuItem Header="Supprimer" Click="MenuItem_Supprimer_Click"/>
+            <MenuItem Header="Employee" Click="MenuItem_ListEmployee_Click"/>
+            <MenuItem Header="Save">
+                <MenuItem Header="Importer" Click="MenuItem_Import_Click"/>
+                <MenuItem Header="Exporter" Click="MenuItem_Exporter_Click"/>
+            </MenuItem>
+        </Menu>
+
+
+        <!-- Header -->
         <TextBlock Text="GESTION DE PROJETS" 
                    FontWeight="Bold" 
                    FontSize="24" 
-                   Foreground="red" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Top"
-                   Margin="0,10,0,0" />
+                   HorizontalAlignment="Left" 
+                   Margin="76,10,0,20" Grid.Column="1" >
+            <TextBlock.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FF1235E2" Offset="1"/>
+                </LinearGradientBrush>
+            </TextBlock.Foreground>
+        </TextBlock>
 
-        <!-- Project Panels Grid -->
-        <Grid Margin="10">
+        <!-- Project Panels -->
+        <Grid Grid.Row="1" Margin="20,20,20,20" x:Name="MainGrid" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="330*" />
+                <ColumnDefinition Width="50*"/>
+                <ColumnDefinition Width="23*" />
+                <ColumnDefinition Width="357*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Project Panel 1 -->
-            <Border Grid.Column="0" Background="LightPink" Margin="10,50,5,10">
+            <Border Grid.Column="0" Margin="0,0,10,20" Background="#FF3B5EBA" Opacity="0.78">
                 <StackPanel>
-                    <TextBlock Text="Project1" FontWeight="Bold" />
-                    <ListView>
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn Header="Nom" Width="120" DisplayMemberBinding="{Binding Nom}" />
-                                <GridViewColumn Header="Tâches" Width="120" DisplayMemberBinding="{Binding Taches}" />
-                                <GridViewColumn Header="Date Limite" Width="120" DisplayMemberBinding="{Binding DateLimite}" />
-                                <GridViewColumn Header="Déjà Effectué" Width="Auto">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox IsChecked="{Binding DejaEffectue}" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                        <!-- Items should be bound to a data source, not hardcoded -->
-                    </ListView>
-                    <Button Content="Ajout Participant" RenderTransformOrigin="0.458,1.355"/>
+                    <TextBlock FontWeight="Bold" Margin="5" x:Name="nomDuProject" Text="Création d'un Projet">
+
+                    </TextBlock>
+                    <DataGrid ItemsSource="{Binding ListTache}" SelectedItem="{Binding CurrentTache}" Margin="20" Height="217" AutoGenerateColumns="False" Foreground="Black" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Tâches" Binding="{Binding Titre, UpdateSourceTrigger=PropertyChanged}" Width="*"/>
+                            <DataGridTextColumn Header="Membres" Binding="{Binding Membre.Nom, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel Background="#FF5462BA" Margin="0 10 0 20" Visibility="Visible" x:Name="participantForm" Opacity="0.781" Height="185" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Label Content="Nom du projet" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBox x:Name="txtParticipant" Grid.Row="0" Grid.Column="1" Width="100" VerticalAlignment="Center"/>
+                            <Label Content="Nom du membre " Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="cmbMembres" Grid.Row="1" Grid.Column="1" Width="100" VerticalAlignment="Center" ItemsSource="{Binding ListEmployee}" DisplayMemberPath="Nom"/>
+
+                            <Label Content="Tâche" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBox x:Name="txtTache" Grid.Row="2" Grid.Column="1" Width="100" VerticalAlignment="Center"/>
+
+                            <Label Content="Date de Debut" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
+                            <DatePicker x:Name="dpDateDeDebut" Grid.Row="3" Grid.Column="1" Width="100" VerticalAlignment="Center" IsEnabled="True"/>
+
+                            <Label Content="Date Limite" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
+                            <DatePicker x:Name="dpDateLimite" Grid.Row="4" Grid.Column="1" Width="100" VerticalAlignment="Center" IsEnabled="True"/>
+
+                            <Label Content="Statut " Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="cmbStatut" Grid.Row="5" Grid.Column="1" Width="100" VerticalAlignment="Center">
+                                <ComboBoxItem Content="À faire" Tag="Afaire"/>
+                                <ComboBoxItem Content="En cours" Tag="Encours"/>
+                                <ComboBoxItem Content="Terminé" Tag="Termine"/>
+                                <ComboBoxItem Content="En pause" Tag="Enpause"/>
+                                <ComboBoxItem Content="Annulé" Tag="Annule"/>
+                            </ComboBox>
+
+                        </Grid>
+                        <Button Content="OK" Margin="5" Click="OK_Click"/>
+                    </StackPanel>
+                    <Button Content="Ajouter Participant" Click="AjouterParticipant_Click"/>
                 </StackPanel>
             </Border>
 
             <!-- Project Panel 2 (Similar to Panel 1) -->
-            <!-- ... -->
+            <Border Grid.Column="1" Margin="10,0,0,20" Grid.ColumnSpan="3" Opacity="0.76" Background="#FF2E4B94">
+                <StackPanel>
+                    <TextBlock FontWeight="Bold" Margin="5" Text="Liste de Projets"/>
+                    <DataGrid ItemsSource="{Binding ListProjet}" SelectedItem="{Binding CurrentProjet}" AutoGenerateColumns="False" Height="483" Width="508" Opacity="0.825" Foreground="#FF0644CE">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Id Projet" Binding="{Binding IdProjet}" Width="25"/>
+                            <DataGridTextColumn Header="Nom" Binding="{Binding Nom}" Width="150"/>
+                            <DataGridTemplateColumn Header="Tâches" Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ItemsControl ItemsSource="{Binding Taches}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Titre}"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Membres" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ItemsControl ItemsSource="{Binding Taches}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Membre.Nom}"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <!--
+                            
+                            <DataGridTextColumn Header="Date Limite" Binding="{Binding DateFin, StringFormat='dd/MM/yyyy'}" Width="*"/>
+                            -->
+                            <!--
+                            <DataGridTextColumn Header="Statut" Binding="{Binding Statut, Converter={StaticResource StatutColor}}" Width="50"/>
+                            -->
 
-            <!-- Add Project Panel -->
-            <Border Grid.Column="1" Background="LightPink" Margin="5,50,10,10">
-                <Button Content="ADD project" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                            <!--<DataGridTextColumn Header="Statut" Width="50"/> -->
+                            <!--
+                            <DataGridTextColumn Header="Age" Binding="{Binding Statut}" IsReadOnly="True"> -->
+                            
+                            
+                            <!--<DataGridTextColumn.ElementStyle>  -->
+                            <!--  <Style TargetType="{x:Type TextBlock}">  -->
+                            <!--      <Setter Property="Background" Value = "{Binding DateFin, Converter={StaticResource StatutColor}}"/>  -->
+                            <!--</Style> -->
+                            <!-- </DataGridTextColumn.ElementStyle> -->
+                            <!-- </DataGridTextColumn>  -->
+
+                            <DataGridTextColumn Header="Statut" Width="50" IsReadOnly="True" Foreground="Black">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <MultiBinding Converter="{StaticResource StatutColor}" >
+                                                    <Binding Path="DateDebut"/>
+                                                    <Binding Path="DateFin"/>
+                                                </MultiBinding>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </StackPanel>
             </Border>
-        </Grid>
-
-        <!-- Check-In Panel -->
-        <Grid Margin="10" Visibility="Collapsed">
-            <!-- Set Visibility to Visible when needed -->
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <!-- Check-In Title -->
-            <TextBlock Grid.Row="0" Text="Project1 - Check-in" FontWeight="Bold" />
-
-            <!-- Participant's status -->
-            <StackPanel Grid.Row="1">
-                <!-- Participant 1 Status -->
-                <Border Margin="5">
-                    <StackPanel>
-                        <TextBlock Text="I'm working on..." />
-                        <!-- The content below should be dynamically generated -->
-                        <TextBox Text="Task description..." />
-                        <TextBlock Text="And also..." />
-                        <TextBox Text="Additional info..." />
-                        <TextBlock Text="I could use help with:" />
-                        <TextBox Text="Help needed..." />
-                    </StackPanel>
-                </Border>
-
-                <!-- Participant 2 Status (Similar to Participant 1) -->
-                <!-- ... -->
-            </StackPanel>
-
-            <!-- Add Participant Button -->
-            <Button Grid.Row="2" Content="Ajout Participant" Margin="5"/>
         </Grid>
 
 
